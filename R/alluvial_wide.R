@@ -103,6 +103,7 @@ alluvial_wide = function( data
                             , stratum_label_size = 4.5
                             , stratum_width = 1/4
                             , auto_rotate_xlabs = T
+                            , custom_value = NULL
                             , ...
                             ){
   # quos
@@ -345,6 +346,18 @@ alluvial_wide = function( data
   if(colorful_fill_variable_stratum){
     data_new = data_new %>%
       mutate( fill_value = ifelse( x == fill_by, fill_flow, fill_value) )
+  }
+  
+  if(!is.null(custom_value) && stratum_labels){
+
+    data_new = data_new %>% 
+      group_by(value, x) %>% 
+      mutate(count = sum(n)) %>% 
+      ungroup() %>% 
+      group_by(x) %>% 
+      mutate(percent = paste0(round(100*count/sum(n),2),"%"),
+             value =  glue(custom_value),
+             value = as.factor(value))
   }
   
   p <- ggplot(data_new,
