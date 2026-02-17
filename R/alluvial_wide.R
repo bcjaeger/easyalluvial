@@ -349,7 +349,9 @@ alluvial_wide = function( data
   }
   
   if(!is.null(custom_value) && stratum_labels){
-
+    if(!grepl("value", custom_value, ignore.case = TRUE)){
+      stop("Must provide the column 'value' for custom labels")
+    }
     data_new = data_new %>% 
       group_by(value, x) %>% 
       mutate(count = sum(n)) %>% 

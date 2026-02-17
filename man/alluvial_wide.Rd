@@ -22,6 +22,7 @@ alluvial_wide(
   stratum_label_size = 4.5,
   stratum_width = 1/4,
   auto_rotate_xlabs = T,
+  custom_value = NULL,
   ...
 )
 }
