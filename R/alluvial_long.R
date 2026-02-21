@@ -37,6 +37,8 @@
 #'@param stratum_label_size numeric, Default: 4.5
 #'@param stratum_width double, Default: 1/4
 #'@param auto_rotate_xlabs logical, Default: TRUE
+#'#'@param custom_value string, create a custom label with counts and percentages
+#'included in value label, Default: NULL
 #'@param ... additional parameter passed to \code{\link[easyalluvial]{manip_bin_numerics}}
 #'@return ggplot2 object
 #'@seealso \code{\link[easyalluvial]{alluvial_wide}}
@@ -121,6 +123,7 @@ alluvial_long = function( data
                           , stratum_label_size = 4.5
                           , stratum_width = 1/4
                           , auto_rotate_xlabs = T
+                          , custom_value = NULL
                           , ...
 ){
 
@@ -414,7 +417,21 @@ alluvial_long = function( data
                                    & x == fill_str
                                    , fill_flow, fill_value ) )
   }
-
+  
+  if(!is.null(custom_value) && stratum_labels){
+    if(!grepl("\\{value\\}", custom_value, ignore.case = TRUE)){
+      stop("Must provide the column '{value}' for custom labels")
+    }
+    data_new = data_new %>% 
+      group_by(value, x) %>% 
+      mutate(count = sum(n)) %>% 
+      ungroup() %>% 
+      group_by(x) %>% 
+      mutate(percent = paste0(round(100*count/sum(n),2),"%"),
+             value =  glue(custom_value),
+             value = as.factor(value))
+  }
+  
   p <- ggplot(data_new,
               aes(x = x
                   , stratum = value

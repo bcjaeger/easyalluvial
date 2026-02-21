@@ -68,6 +68,9 @@ fill variable stratum, Default: TRUE}
 
 \item{auto_rotate_xlabs}{logical, Default: TRUE}
 
+\item{custom_value}{string, create a custom label with counts and percentages
+included in value label, Default: NULL}
+
 \item{...}{additional arguments passed to
 \code{\link[easyalluvial]{manip_bin_numerics}}}
 }

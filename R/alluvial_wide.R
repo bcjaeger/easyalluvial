@@ -42,6 +42,8 @@ if(getRversion() >= "2.15.1"){
 #'@param stratum_label_size numeric, Default: 4.5
 #'@param stratum_width double, Default: 1/4
 #'@param auto_rotate_xlabs logical, Default: TRUE
+#'@param custom_value string, create a custom label with counts and percentages
+#'included in value label, Default: NULL
 #'@param ... additional arguments passed to
 #'  \code{\link[easyalluvial]{manip_bin_numerics}}
 #'@return ggplot2 object
@@ -349,8 +351,8 @@ alluvial_wide = function( data
   }
   
   if(!is.null(custom_value) && stratum_labels){
-    if(!grepl("value", custom_value, ignore.case = TRUE)){
-      stop("Must provide the column 'value' for custom labels")
+    if(!grepl("\\{value\\}", custom_value, ignore.case = TRUE)){
+      stop("Must provide the column '{value}' for custom labels")
     }
     data_new = data_new %>% 
       group_by(value, x) %>% 
