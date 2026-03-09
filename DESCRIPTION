@@ -60,4 +60,5 @@ Imports:
   , progressr
   , progress
   , glue
+  , table.glue
 Language: en-US
