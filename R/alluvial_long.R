@@ -422,14 +422,25 @@ alluvial_long = function( data
     if(!grepl("\\{value\\}", custom_value, ignore.case = TRUE)){
       stop("Must provide the column '{value}' for custom labels")
     }
+    
+    rspec <- round_spec() %>% 
+      round_using_magnitude()
+    
     data_new = data_new %>% 
       group_by(value, x) %>% 
       mutate(count = sum(n)) %>% 
       ungroup() %>% 
       group_by(x) %>% 
-      mutate(percent = paste0(round(100*count/sum(n),2),"%"),
-             value =  glue(custom_value),
-             value = as.factor(value))
+      mutate(
+        percent = table_value(100*count/sum(n), rspec = rspec),
+        percent = paste0(percent, "%"),
+        count = table_value(as.integer(count)),
+        # careful not to overwrite the value column as it is used
+        # to set up data_key later on in this function.
+        value_label = glue(custom_value),
+        value_label = as.factor(value_label)
+      ) %>% 
+      ungroup()
   }
   
   p <- ggplot(data_new,
@@ -437,7 +448,7 @@ alluvial_long = function( data
                   , stratum = value
                   , alluvium = alluvial_id
                   , y = n
-                  , label = value)) +
+                  , label = value_label)) +
     ggalluvial::geom_flow(stat = "alluvium"
                           , lode.guidance = "leftright"
                           , aes( fill = fill_flow
