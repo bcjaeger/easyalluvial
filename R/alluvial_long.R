@@ -37,7 +37,7 @@
 #'@param stratum_label_size numeric, Default: 4.5
 #'@param stratum_width double, Default: 1/4
 #'@param auto_rotate_xlabs logical, Default: TRUE
-#'#'@param custom_value string, create a custom label with counts and percentages
+#'@param custom_value string, create a custom label with counts and percentages
 #'included in value label, Default: NULL
 #'@param ... additional parameter passed to \code{\link[easyalluvial]{manip_bin_numerics}}
 #'@return ggplot2 object
@@ -97,6 +97,8 @@
 #'@importFrom forcats fct_relevel fct_rev
 #'@importFrom rlang UQ quo_is_null
 #'@importFrom tidyr unnest gather complete spread
+#'@importFrom table.glue table_value round_spec round_using_magnitude
+#'@importFrom glue glue
 #'@import ggalluvial
 #'@import dplyr
 #'@import purrr
