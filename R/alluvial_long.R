@@ -441,6 +441,12 @@ alluvial_long = function( data
         value_label = as.factor(value_label)
       ) %>% 
       ungroup()
+    
+  } else {
+    
+    data_new = data_new %>% 
+      mutate(value_label = value)
+    
   }
   
   p <- ggplot(data_new,
